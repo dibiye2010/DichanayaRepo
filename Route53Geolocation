@@ -1,0 +1,45 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Metadata:
+ License: Apache-2.0
+Description: This template will create a route 53 record
+
+
+# Ressources
+
+Resources:
+
+  myDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId : Z01892454U0HIQLIG2W7
+      Name: Africanfinancialprivate.tiger.cloudspaceconsulting.com
+      ResourceRecords:
+      - 172.16.1.184
+      TTL: '900'
+      Type: A
+
+  myDNS:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: Z01892454U0HIQLIG2W7
+      Comment: Zone apex alias targeted to myELB LoadBalancer.
+      RecordSets:
+      - Name: Africanfinancialpublic.tiger.cloudspaceconsulting.com.
+        Type: CNAME
+        TTL: '50'
+        SetIdentifier: Front End one
+        GeoLocation: 
+          CountryCode: 'US'
+        ResourceRecords:
+        - ApplicationLoadBn-1913213657.us-east-1.elb.amazonaws.com
+
+
+      - Name: Africanfinancialpublic.tiger.cloudspaceconsulting.com.
+        Type: CNAME
+        TTL: '50'
+        SetIdentifier: Front End one two
+        GeoLocation: 
+          CountryCode: '*'
+        ResourceRecords:
+        - http://africanfinancialpublic.tiger.cloudspaceconsulting.com.s3-website-us-east-1.amazonaws.com
